@@ -1,0 +1,49 @@
+
+    
+<%- include('../partials/header.ejs') %>   
+<%- include('../partials/navbar.ejs') %>  
+
+<%
+    const allMonths = ['Jan','Feb','March','April','May','June','July','Aug','Sep','Oct','Nov','Dec'];
+    const allDays =['Sun', 'Mon' ,'Tue', 'Wed', 'Thu' ,' Fri' ,'Sat']
+    
+%>
+    
+<div class="container d-flex justify-content-center align-items-center " style = "flex-direction: column;">
+<% for(let i=0; i<dbBlogs.length;i++) {%>
+
+        <%
+        let dateCreated="";
+        dateCreated=dateCreated+allDays[dbBlogs[i].createdOn.getDay()]+" , ";
+        dateCreated+= dbBlogs[i].createdOn.getDate()+" , "  +allMonths[ dbBlogs[i].createdOn.getMonth()]+" , "+dbBlogs[i].createdOn.getYear();
+        dateCreated+= "  at : "+dbBlogs[i].createdOn.getHours()+":"+dbBlogs[i].createdOn.getMinutes()+":"+dbBlogs[i].createdOn.getSeconds()
+      %>
+    <div class="card m-3" style="max-width: 700px; width: 100%;">
+        <div class="row ">
+            <!-- <div class="col-md-4" style = "border :2px solid red;"></div> -->
+          <div class="col-md-4">
+            <img src="<%=dbBlogs[i].icon%>" class="img-responsive" alt="icon not found" style="width:200px;">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title"><%=dbBlogs[i].heading%></h5>
+              <p class="card-text"> <%=dbBlogs[i].body_text.substring(0,50) %> </p>
+              <p class="card-text"><small class="text-muted">Created by: <strong><%=dbBlogs[i].author%></strong> </small></p>
+              <p class="card-text"><small class="text-muted">on <%=dateCreated%> </small></p>
+              <a href="/blogs/<%=dbBlogs[i]._id%>" class = "btn btn-primary">Read More</a>
+            </div>
+          </div>
+        </div>
+    </div>
+
+<%}%>
+
+
+</div>
+
+
+
+
+
+<%- include('../partials/footer.ejs') %>   
+

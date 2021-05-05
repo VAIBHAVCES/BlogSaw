@@ -1,0 +1,97 @@
+<%- include('../partials/header.ejs') %>   
+<%- include('../partials/navbar.ejs') %>  
+
+
+<!-- <div class="container d-flex justify-content-center align-items-center " style = "flex-direction: column;">
+
+    <h1><%=blog.heading%></h1>
+    <p> <%=blog.body_text%></p>
+</div> -->
+<%
+    const allMonths = ['Jan','Feb','March','April','May','June','July','Aug','Sep','Oct','Nov','Dec'];
+    const allDays =['Sun', 'Mon' ,'Tue', 'Wed', 'Thu' ,' Fri' ,'Sat']
+    
+%>
+
+
+
+<div class="container">
+
+    <div class="row " style ="">
+        <div class="col-md-4 col-lg-8" style="margin:10px auto;">
+    
+            <div class="card" style="">
+                <img src="<%=blog.body_img%>" class="card-img-top" style=" ">
+                <div class="card-body"   >
+                  <h5 class="card-title text-center" style="font-size: 1.5rem;"><%=blog.heading%></h5>
+                  <p class="card-text" style="font-family: 'Roboto Slab', serif;"><%=blog.body_text%> </p>
+                  <p class="card-text" style="font-size: 1.5rem;"><small class="text-muted">Authored By :<%=blog.author%></small></p>
+                  <!-- Parsing the date and time here  -->
+                  <%
+                        let dateCreated="";
+                        dateCreated=dateCreated+allMonths[blog.createdOn.getMonth()]+",";
+                        dateCreated+= blog.createdOn.getDate()+","+blog.createdOn.getYear();
+                        dateCreated+= "  at : "+blog.createdOn.getHours()+":"+blog.createdOn.getMinutes()+":"+blog.createdOn.getSeconds()
+                  %>
+                  <p class="card-text" style="font-size: 1.5rem;"><small class="text-muted">Created On :
+                      <%=dateCreated%></small></p>
+                
+                </div>
+                <div class ="allBtns d-flex justify-content-center">
+                    <a href="/blogs/<%=blog._id%>/update" class ="btn btn-success mx-2"> Update</a>
+                    <form action="/blogs/<%=blog._id%>?_method=DELETE" method="post">
+                        <button class="btn btn-danger mx-2"> Delete</button>
+                    </form>
+
+                </div>
+            
+                <div class="container  " style ="width:50%;">
+                    <%-include('./reviewForm.ejs')%>
+
+                </div>
+            
+                <!--Container to display already posted comments  -->
+                <div class="container">
+                    <%for(let i=0 ; i<allReviews.length;i++){%>
+                        <div class="card">
+                            <div class="card-header">
+                              Username
+                            </div>
+                            <div class="card-body">
+                              <h5 class="card-title" style="color:goldenrod;"> 
+                                <%for(let j=0;j<allReviews[i].rating;j++){%>
+                                    ★
+                                <%}%>
+
+                              </h5>
+                              <p class="card-text"><%=allReviews[i].comment%></p>
+                              </div>
+                          </div>
+
+
+
+                    <%}%>
+
+
+                </div>
+        </div>
+            
+
+            
+        </div>
+
+        
+   
+    
+    
+    </div>
+
+
+</div>
+
+
+
+
+
+
+<%- include('../partials/footer.ejs') %>  

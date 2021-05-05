@@ -1,0 +1,52 @@
+<%- include('../partials/header.ejs') %>   
+<%- include('../partials/navbar.ejs') %>  
+
+<div class="container my-4" style>
+
+    <div class="row" style="display:flex; justify-content:center ; align-items: center;">
+        <!-- style="border:2px solid green;  -->
+        <div class="col-md-6">
+
+
+            <form action="/blogs/<%=blog._id%>?_method=PATCH" method ="POST" class ="needs-validation" novalidate>
+
+                
+                <div class="mb-3">
+                    <label for="author" class="form-label" >Author's Name </label>
+                    <input type="text" class="form-control" id="author" name="author" value="<%=blog.author%>" required>
+                </div>
+                <div class="mb-3">
+                    <label for="icon" class="form-label" >Img icon  </label>
+                    <input type="text" class="form-control" id="icon" name="icon" value="<%=blog.icon%>" required>
+                </div>
+                <div class="mb-3">
+                    <label for="heading" class="form-label" >Heading  </label>
+                    <input type="text" class="form-control" id="heading" name="heading" value="<%=blog.heading%>" required>
+                </div>
+                <div class="mb-3">
+                    <label for="sub_heading" class="form-label" >Sub - Heading  </label>
+                    <input type="text" class="form-control" id="sub_heading" name="sub_heading" value="<%=blog.sub_heading%>" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="body_img" class="form-label" >Image in body of blog </label>
+                    <input type="text" class="form-control" id="body_img" name="body_img" value="<%=blog.body_img%>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="body_text" class="form-label" >Please Enter body of your blog</label>
+                    <textarea class="form-control" id="body_text" name="body_text" rows="10" method ="post" required><%=blog.body_text%></textarea>
+                </div>
+
+                <button class="btn btn-primary" type="submit">Submit form</button>
+
+            </form>
+            
+        </div>
+
+    </div>
+
+</div>
+
+
+<%- include('../partials/footer.ejs') %>

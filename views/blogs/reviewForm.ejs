@@ -1,0 +1,12 @@
+<form action="/blogs/<%=blog._id%>/review" class = "my-4" method="post">
+
+    <label for="rating" class="form-label"> Review</label>
+    <input type="range" class="form-range" min="0" max="5" id="rating" name = "rating">
+
+
+    <label for="comment" class="form-label">Comment</label>
+    <textarea type="text" id="comment" name ="comment" class="form-control" rows= 5></textarea>
+
+    <button type ="submit" class = "my-3 btn btn-primary">Submit</button>
+
+</form>
