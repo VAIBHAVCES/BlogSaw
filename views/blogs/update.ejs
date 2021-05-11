@@ -8,13 +8,9 @@
         <div class="col-md-6">
 
 
-            <form action="/blogs/<%=blog._id%>?_method=PATCH" method ="POST" class ="needs-validation" novalidate>
+            <form action="/blogs/<%=blog._id%>/user/<%=blog.author._id%>?_method=PATCH" method ="POST" class ="needs-validation" novalidate>
 
                 
-                <div class="mb-3">
-                    <label for="author" class="form-label" >Author's Name </label>
-                    <input type="text" class="form-control" id="author" name="author" value="<%=blog.author%>" required>
-                </div>
                 <div class="mb-3">
                     <label for="icon" class="form-label" >Img icon  </label>
                     <input type="text" class="form-control" id="icon" name="icon" value="<%=blog.icon%>" required>

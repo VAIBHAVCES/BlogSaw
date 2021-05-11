@@ -34,7 +34,7 @@
             <div class="card-body">
               <h5 class="card-title"><%=dbBlogs[i].heading%></h5>
               <p class="card-text"> <%=dbBlogs[i].body_text.substring(0,50) %> </p>
-              <p class="card-text"><small class="text-muted">Created by: <strong><%=dbBlogs[i].author%></strong> </small></p>
+              <p class="card-text"><small class="text-muted">Created by: <strong><%=dbBlogs[i].author.name%></strong> </small></p>
               <p class="card-text"><small class="text-muted">on <%=dateCreated%> </small></p>
               <a href="/blogs/<%=dbBlogs[i]._id%>" class = "btn btn-primary">Read More</a>
             </div>

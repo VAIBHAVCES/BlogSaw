@@ -21,7 +21,7 @@
                 <div class="card-body"   >
                   <h5 class="card-title text-center" style="font-size: 1.5rem;"><%=blog.heading%></h5>
                   <p class="card-text" style="font-family: 'Roboto Slab', serif;"><%=blog.body_text%> </p>
-                  <p class="card-text" style="font-size: 1.5rem;"><small class="text-muted">Authored By :<%=blog.author%></small></p>
+                  <p class="card-text" style="font-size: 1.5rem;"><small class="text-muted">Authored By :<%=blog.author.name%></small></p>
                   <!-- Parsing the date and time here  -->
                   <%
                         let dateCreated="";
@@ -33,14 +33,17 @@
                       <%=dateCreated%></small></p>
                 
                 </div>
-
+                <%if(currentUser && blog.author.username==currentUser.username) {%>
                 <div class ="allBtns d-flex justify-content-center">
-                    <a href="/blogs/<%=blog._id%>/update" class ="btn btn-success mx-2"> Update</a>
-                    <form action="/blogs/<%=blog._id%>?_method=DELETE" method="post">
+                    <!-- <h1>true</h1> -->
+                    
+                    <a href="/blogs/<%=blog._id%>/user/<%=currentUser._id%>" class ="btn btn-success mx-2"> Update</a>
+                    <form action="/blogs/<%=blog._id%>/user/<%=currentUser._id%>?_method=DELETE" method="post">
                         <button class="btn btn-danger mx-2"> Delete</button>
                     </form>
 
                 </div>
+                <%}%>
             
                 <div class="container  " style ="width:50%;">
                     <%-include('./reviewForm.ejs')%>
