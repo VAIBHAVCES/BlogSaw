@@ -2,11 +2,6 @@
 <%- include('../partials/navbar.ejs') %>  
 
 
-<!-- <div class="container d-flex justify-content-center align-items-center " style = "flex-direction: column;">
-
-    <h1><%=blog.heading%></h1>
-    <p> <%=blog.body_text%></p>
-</div> -->
 <%
     const allMonths = ['Jan','Feb','March','April','May','June','July','Aug','Sep','Oct','Nov','Dec'];
     const allDays =['Sun', 'Mon' ,'Tue', 'Wed', 'Thu' ,' Fri' ,'Sat']
@@ -16,9 +11,10 @@
 
 
 <div class="container">
-
     <div class="row " style ="">
         <div class="col-md-4 col-lg-8" style="margin:10px auto;">
+            
+            <%-include("../partials/flash.ejs");%>
     
             <div class="card" style="">
                 <img src="<%=blog.body_img%>" class="card-img-top" style=" ">

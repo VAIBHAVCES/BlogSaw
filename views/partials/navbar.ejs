@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light navbtns">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#" style="font-family: 'Krona One', sans-serif;">BlogSaw</a>
+      <span class="navbar-brand" href="#" style="font-family: 'Krona One', sans-serif;">BlogSaw</span>
      
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -12,7 +12,7 @@
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/blogs">All Blogs</a>
+            <a class="nav-link mx-2" href="/blogs">All Blogs</a>
           </li>
           
           <li class="nav-item">
@@ -20,6 +20,14 @@
           </li>
         </ul>
         
+        
+        <% if(currentUser && currentUser.username.length> 0) {  %>
+          <span class="nav-link "  tabindex="-1" style="color:black;">Hello  , <%=currentUser.name%></span>
+        <a class="nav-link " href="/logout" tabindex="-1" style="color:black;">LogOut</a>
+        <%}else{%>
+          <a class="nav-link " href="/login" tabindex="-1" style="color:black;">Sign In</a>
+          <a class="nav-link " href="/register" tabindex="-1" style="color:black;">Sign Up</a>
+        <%}%>  
       </div>
 
 

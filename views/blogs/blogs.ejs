@@ -10,19 +10,25 @@
 %>
     
 <div class="container d-flex justify-content-center align-items-center " style = "flex-direction: column;">
-<% for(let i=0; i<dbBlogs.length;i++) {%>
+    
+    
+  <h1>Popular Blogs...</h1>
+  <%-include("../partials/flash.ejs");%>
+  <% for(let i=0; i<dbBlogs.length;i++) {%>
 
         <%
         let dateCreated="";
         dateCreated=dateCreated+allDays[dbBlogs[i].createdOn.getDay()]+" , ";
-        dateCreated+= dbBlogs[i].createdOn.getDate()+" , "  +allMonths[ dbBlogs[i].createdOn.getMonth()]+" , "+dbBlogs[i].createdOn.getYear();
+        dateCreated+= dbBlogs[i].createdOn.getDate()+" , "  +allMonths[ dbBlogs[i].createdOn.getMonth()]+" , "+(1900+dbBlogs[i].createdOn.getYear());
         dateCreated+= "  at : "+dbBlogs[i].createdOn.getHours()+":"+dbBlogs[i].createdOn.getMinutes()+":"+dbBlogs[i].createdOn.getSeconds()
       %>
+
+    
     <div class="card m-3" style="max-width: 700px; width: 100%;">
         <div class="row ">
             <!-- <div class="col-md-4" style = "border :2px solid red;"></div> -->
           <div class="col-md-4">
-            <img src="<%=dbBlogs[i].icon%>" class="img-responsive" alt="icon not found" style="width:200px;">
+            <img src="<%=dbBlogs[i].icon%>" class="img-responsive" alt="icon not found">
           </div>
           <div class="col-md-8">
             <div class="card-body">

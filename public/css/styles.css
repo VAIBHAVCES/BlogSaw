@@ -7,3 +7,17 @@
 body{
     background-color: aqua;
 }
+.card img{
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+}
+.navbtns a{
+
+    border-radius: 30%;
+}
+.navbtns a:hover{
+    background-color:#b7e4c7;
+    color: white;
+    transition: background-color 0.5s , color 0.5s;
+}
