@@ -1,8 +1,23 @@
-<form action="/blogs/<%=blog._id%>/review" class = "my-4" method="post">
 
-    <label for="rating" class="form-label"> Review</label>
-    <input type="range" class="form-range" min="0" max="5" id="rating" name = "rating">
+<%if(currentUser && currentUser.username.length>0){%>
 
+<form action="/blogs/<%=blog._id%>/user/<%=currentUser._id%>/review" class = "my-4" method="post">
+
+
+    <fieldset class="starability-basic">
+        <legend>First rating:</legend>
+        <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
+        <input type="radio" id="first-rate1" name="rating" value="1" />
+        <label for="first-rate1" title="Terrible">1 star</label>
+        <input type="radio" id="first-rate2" name="rating" value="2" />
+        <label for="first-rate2" title="Not good">2 stars</label>
+        <input type="radio" id="first-rate3" name="rating" value="3" />
+        <label for="first-rate3" title="Average">3 stars</label>
+        <input type="radio" id="first-rate4" name="rating" value="4" />
+        <label for="first-rate4" title="Very good">4 stars</label>
+        <input type="radio" id="first-rate5" name="rating" value="5" />
+        <label for="first-rate5" title="Amazing">5 stars</label>
+      </fieldset>
 
     <label for="comment" class="form-label">Comment</label>
     <textarea type="text" id="comment" name ="comment" class="form-control" rows= 5></textarea>
@@ -10,3 +25,9 @@
     <button type ="submit" class = "my-3 btn btn-primary">Submit</button>
 
 </form>
+
+<%}else{%>
+    
+    <h5 class="my-3">Please do Login to Post Any Reviews</h5>
+
+    <%}%>

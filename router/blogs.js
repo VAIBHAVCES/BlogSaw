@@ -51,7 +51,7 @@ router.get("/blogs/:id/update", async(req,res)=>{
     
 });
 
-router.patch("/blogs/:id", async(req,res)=>{
+router.patch("/blogs/:id/update/", async(req,res)=>{
     try{
         await Blogs.findByIdAndUpdate(req.params.id , req.body);
         req.flash('success','blogs updated successfully');
@@ -73,12 +73,12 @@ router.delete("/blogs/:id", async(req,res)=>{
         res.render('error');
     }
 });
-router.post("/blogs/:id/review",isLoggedIn, async(req,res)=>{
+router.post("/blogs/:id/user/:userId/review",isLoggedIn, async(req,res)=>{
     try{
-        const review = await new Reviews(req.body);
+        const review = await new Reviews({...req.body, user:req.user._id});
         const updatedBlog=await Blogs.findById(req.params.id);
-        updatedBlog.reviews.push(review);
         review.save();
+        updatedBlog.reviews.push(review);
         updatedBlog.save();
         req.flash('success','Review added ');
         res.redirect(`/blogs/${req.params.id}`);
@@ -93,14 +93,33 @@ router.post("/blogs/:id/review",isLoggedIn, async(req,res)=>{
 
 router.get("/blogs/:id", async(req,res)=>{
     try{
+        
         const blog = await Blogs.findById(req.params.id).populate('reviews');
-        const allReviews = blog.reviews;
+        
+        const fetchFromReview = await Blogs.findById(req.params.id).populate('reviews');
+        const newReviewlist = blog.reviews;
+        const allReviews = []
+        for(let item of newReviewlist){
+            const temp = await Reviews.findById(item._id).populate('user');
+            allReviews.push(temp);
+        }
+        // console.log(allReviews);
         res.render('blogs/show',{blog,allReviews});
 
     }catch(err){
         req.flash('error' , 'Invalid id please enter a valid id');
         res.redirect('/error');
     }
+});
+
+router.delete("/blogs/:id/review/:reviewId",async(req,res)=>{
+    const blog = await Blogs.findById(req.params.id);
+    blog.reviews = blog.reviews.filter((value,index,arr)=>{
+        return value._id!=req.params.reviewId;
+    })  ;
+    blog.save();
+    await Reviews.findByIdAndDelete(req.params.reviewId);
+    res.redirect(`/blogs/${req.params.id}`);
 });
 
 router.get("/error",(req,res)=>{

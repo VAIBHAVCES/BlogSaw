@@ -1,4 +1,4 @@
-const isLoggedIn = (req,res)=>{
+const isLoggedIn = (req,res,next)=>{
     
     if(!req.isAuthenticated()){
         req.flash('error','Login First');

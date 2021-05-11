@@ -16,7 +16,7 @@
             
             <%-include("../partials/flash.ejs");%>
     
-            <div class="card" style="">
+            <div class="card my-3">
                 <img src="<%=blog.body_img%>" class="card-img-top" style=" ">
                 <div class="card-body"   >
                   <h5 class="card-title text-center" style="font-size: 1.5rem;"><%=blog.heading%></h5>
@@ -33,6 +33,7 @@
                       <%=dateCreated%></small></p>
                 
                 </div>
+
                 <div class ="allBtns d-flex justify-content-center">
                     <a href="/blogs/<%=blog._id%>/update" class ="btn btn-success mx-2"> Update</a>
                     <form action="/blogs/<%=blog._id%>?_method=DELETE" method="post">
@@ -43,26 +44,32 @@
             
                 <div class="container  " style ="width:50%;">
                     <%-include('./reviewForm.ejs')%>
-
                 </div>
-            
-                <!--Container to display already posted comments  -->
+
+                
+                <!--Container to display already posted Reviews  -->
                 <div class="container">
                     <%for(let i=0 ; i<allReviews.length;i++){%>
-                        <div class="card">
-                            <div class="card-header">
-                              Username
+                        <div class="card my-3">
+                            <div class="card-header">Posted By :
+                                <strong><%=allReviews[i].user.name%></strong>
                             </div>
                             <div class="card-body">
-                              <h5 class="card-title" style="color:goldenrod;"> 
-                                <%for(let j=0;j<allReviews[i].rating;j++){%>
-                                    ★
+                                <p class="starability-result" data-rating="<%=allReviews[i].rating%>">
+                                </p>
+
+                                <p class="card-text"><%=allReviews[i].comment%></p>
+                            
+                                <!-- Checking that user is logged in or not -->
+                                <%if(currentUser && allReviews[i].user._id==currentUser.id){%>
+                                <form action="/blogs/<%=blog._id%>/review/<%=allReviews[i]._id%>?_method=DELETE" method="post">
+                                    <button type="submit" class="btn btn-danger">DELETE</button>
+                                </form>
                                 <%}%>
 
-                              </h5>
-                              <p class="card-text"><%=allReviews[i].comment%></p>
-                              </div>
-                          </div>
+                            </div>
+                                
+                        </div>
 
 
 
@@ -70,19 +77,11 @@
 
 
                 </div>
-        </div>
-            
 
+            </div>
             
         </div>
-
-        
-   
-    
-    
     </div>
-
-
 </div>
 
 
