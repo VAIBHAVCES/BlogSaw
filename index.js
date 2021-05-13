@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const {Blogs} = require('./models/blogs.js');
+
 const {seed} = require('./seed.js'); 
 const {blogsRout} = require('./router/blogs.js')
 const app = express();
@@ -15,6 +16,10 @@ const authRouter = require('./router/auth.js');
 const passport = require('passport');
 const User = require('./models/users.js');
 const  isLoggedIn = require('./middleware.js');
+const userRouter = require('./router/user.js');
+const dotenv= require('dotenv');
+dotenv.config();
+
 
 mongoose.connect('mongodb://localhost/blogsaw', {useNewUrlParser: true, useUnifiedTopology: true ,useFindAndModify:false}).then(()=>{
     console.log("connected to db");
@@ -47,7 +52,10 @@ app.use((req,res,next)=>{
 })
 app.use(blogsRout);
 app.use(authRouter);
-
+app.use(userRouter);
+app.get("/testViews",(req,res)=>{
+    res.render("testViews");
+})
 app.listen(3000,()=>{
     console.log("Listening or port : "+3000);
 })

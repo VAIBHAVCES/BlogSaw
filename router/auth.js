@@ -35,10 +35,16 @@ router.post('/login',passport.authenticate('local', {
 });
 router.post('/register', async(req,res)=>{
 
-    const newUser = new User({email:req.body.email , username:req.body.username , name:req.body.name});
-    const regUser = await User.register(newUser,req.body.password );
-    req.flash('success',`${req.body.name} has been registered successfully`);
-    res.redirect('/login');
+    try{
+
+        const newUser = new User({email:req.body.email , username:req.body.username , name:req.body.name});
+        const regUser = await User.register(newUser,req.body.password );
+        req.flash('success',`${req.body.name} has been registered successfully`);
+        res.redirect('/login');
+    }catch(err){
+        req.flash('error',err.message);
+        res.redirect('/register');
+    }
 
 });
 

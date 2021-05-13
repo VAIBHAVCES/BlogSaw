@@ -16,8 +16,7 @@ body{
 
     border-radius: 30%;
 }
-.navbtns a:hover{
-    background-color:#b7e4c7;
-    color: white;
-    transition: background-color 0.5s , color 0.5s;
-}
+
+.dropdown-menu{
+    z-index: +1;
+} 

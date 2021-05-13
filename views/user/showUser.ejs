@@ -1,0 +1,200 @@
+<%-include('../partials/header.ejs')%>
+<%-include('../partials/navbar.ejs')%>
+
+<style>
+    .container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Noto Serif', serif;
+        
+        flex-direction: column;
+    }
+    .container h1{
+        font-size: 4rem;
+        letter-spacing: 4px;
+        text-align: center;
+    }
+    .profilePicture{
+        border: 12px solid green;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        width: 168;
+        height: 168;
+        /* height: 500px; */
+    }
+    .profilePicture img{
+        width: 168px;
+        height: 168px;
+        border-radius: 50%;
+    }
+    .infoBox{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.5rem;
+        
+    }
+    .overlayOptions{
+
+        position: absolute;
+        
+        height: 100%;
+        width: 100%;
+        /* opacity: 0.5; */
+        visibility:hidden ;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+    .overlayOptions ul{
+
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+    .overlayOptions form{
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        margin: 10%;
+    }
+    /* .profilePicture>*:not(img){
+        visibility: unset;
+    } */
+    .profilePicture:hover .overlayOptions{
+        visibility: unset;
+        color: white;
+        
+        /* background-color:red; */
+    }
+
+    input[type="file"]{
+        /* opacity: 0;
+        width: 0.1px;
+        height: 0.1px;
+        position: absolute; */
+    }
+    label{
+        font-size: 2rem;
+        font-weight: 900;
+        list-style: none;
+    }
+    .details{
+        font-size: 2rem;
+        font-weight: 900;
+        font-family: 'KoHo', sans-serif;
+    }
+</style>
+
+<%
+    const allMonths = ['Jan','Feb','March','April','May','June','July','Aug','Sep','Oct','Nov','Dec'];
+    const allDays =['Sun', 'Mon' ,'Tue', 'Wed', 'Thu' ,' Fri' ,'Sat']
+    
+%>
+<div class="container">
+
+    <h1> <%=user.name.toUpperCase()%></h1>
+    <div class="profilePicture">
+        <div class="container" >
+            <img class ="elem" src=<%=user.avatar%> alt="No pic found" >
+        </div>
+        
+        <!-- this is below is the options bar for editing image  -->
+        <%if(currentUser&& currentUser.username == user.username){%>
+        <div class="elem overlayOptions">
+            <ul style="list-style: none;">
+                <li>
+                    <form action="/user/<%=user._id%>/dp?_method=PATCH" method="post" enctype="multipart/form-data">
+                        <label for="update">Update </label>
+                        <input type="file" name="update" id="update" name="update" onchange="form.submit()">
+                    </form>
+                </li>
+                <li>
+                    <form action="" method="post">
+                        <button class= "btn btn-danger">Remove</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+        <%}%>
+    </div>
+    <!-- ABOUT SECTION -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6">
+                <h1> About Me </h1>
+                <p class="text-center"> <%=user.about%></p>
+            </div>
+        </div>
+    </div>
+    <!-- BASIC INFO DETAILS -->
+    <div class="container-fluid details">
+        
+        <div class="row">
+            <div class="col-md-6 text-center">Email Id : </div>
+            <div class="col-md-6 text-center"><%=user.email%></div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6 text-center">Mobile Number : </div>
+            <div class="col-md-6 text-center"><%=user.mobileNo%></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 text-center">Followers : </div>
+            <div class="col-md-6 text-center"><%=user.followers%></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 text-center">Following : </div>
+            <div class="col-md-6 text-center"><%=user.following%></div>
+        </div>
+    
+    </div>
+    <!-- Editing Form -->
+    <div class="container">
+        <a href="/user/<%=user._id%>/edit" class="btn btn-success">Edit Details</a>
+    </div>
+    <!-- VIEWING ALL POSTS BY THIS USER -->
+    <div class="container">
+        <% for(let i=0; i<allBlogs.length;i++) {%>
+
+            <%
+            let dateCreated="";
+            dateCreated=dateCreated+allDays[allBlogs[i].createdOn.getDay()]+" , ";
+            dateCreated+= allBlogs[i].createdOn.getDate()+" , "  +allMonths[ allBlogs[i].createdOn.getMonth()]+" , "+(1900+allBlogs[i].createdOn.getYear());
+            dateCreated+= "  at : "+allBlogs[i].createdOn.getHours()+":"+allBlogs[i].createdOn.getMinutes()+":"+allBlogs[i].createdOn.getSeconds()
+          %>
+    
+        
+        <div class="card m-3" style="max-width: 700px; width: 100%;">
+            <div class="row ">
+                <!-- <div class="col-md-4" style = "border :2px solid red;"></div> -->
+              <div class="col-md-4">
+                <img src="<%=allBlogs[i].icon%>" class="img-responsive" alt="icon not found">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title"><%=allBlogs[i].heading%></h5>
+                  <p class="card-text"> <%=allBlogs[i].body_text.substring(0,50) %> </p>
+                  <p class="card-text"><small class="text-muted">Created by: <strong><%=allBlogs[i].author.name%></strong> </small></p>
+                  <p class="card-text"><small class="text-muted">on <%=dateCreated%> </small></p>
+                  <a href="/blogs/<%=allBlogs[i]._id%>" class = "btn btn-primary">Read More</a>
+                </div>
+              </div>
+            </div>
+        </div>
+    
+    <%}%>
+
+    </div>
+</div>
+
+<%-include('../partials/footer.ejs')%>

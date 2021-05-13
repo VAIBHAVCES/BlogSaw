@@ -9,7 +9,7 @@
     
 %>
     
-<div class="container d-flex justify-content-center align-items-center " style = "flex-direction: column;">
+<div class="container d-flex justify-content-center align-items-center " style = "flex-direction: column;  " >
     
     
   <h1>Popular Blogs...</h1>
@@ -21,7 +21,7 @@
         dateCreated=dateCreated+allDays[dbBlogs[i].createdOn.getDay()]+" , ";
         dateCreated+= dbBlogs[i].createdOn.getDate()+" , "  +allMonths[ dbBlogs[i].createdOn.getMonth()]+" , "+(1900+dbBlogs[i].createdOn.getYear());
         dateCreated+= "  at : "+dbBlogs[i].createdOn.getHours()+":"+dbBlogs[i].createdOn.getMinutes()+":"+dbBlogs[i].createdOn.getSeconds()
-      %>
+  %>
 
     
     <div class="card m-3" style="max-width: 700px; width: 100%;">

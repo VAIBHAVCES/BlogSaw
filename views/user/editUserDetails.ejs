@@ -1,0 +1,94 @@
+<%- include('../partials/header.ejs') %> <%- include('../partials/navbar.ejs')
+%>
+
+<div class="container my-4" style>
+  <div
+    class="row"
+    style="display: flex; justify-content: center; align-items: center"
+  >
+    <!-- style="border:2px solid green;  -->
+    <div class="col-md-6">
+      <form
+        action="/user/<%=user._id%>?_method=PATCH"
+        method="POST"
+        class="needs-validation"
+        novalidate
+      >
+        <div class="mb-3">
+          <label for="name" class="form-label">Name </label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            value="<%=user.name%>"
+            readonly
+          />
+        </div>
+        <div class="mb-3">
+          <label for="emailid" class="form-label">Email - ID </label>
+          <input
+            type="text"
+            class="form-control"
+            id="emailid"
+            name="emailid"
+            value="<%=user.email%>"
+            readonly
+          />
+        </div>
+        <div class="mb-3">
+          <label for="mobileNo" class="form-label">Mobile Number </label>
+          <input
+            type="number"
+            class="form-control"
+            id="mobileNo"
+            name="mobileNo"
+            value="<%=user.mobileNo%>"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="followers" class="form-label">Followers </label>
+          <input
+            type="text"
+            class="form-control"
+            id="followers"
+            name="followers"
+            value="<%=user.followers%>"
+            readonly
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="following" class="form-label">Following </label>
+          <input
+            type="text"
+            class="form-control"
+            id="following"
+            name="following"
+            value="<%=user.following%>"
+            readonly
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="about" class="form-label">About yourself</label>
+          <textarea
+            class="form-control"
+            id="about"
+            name="about"
+            rows="10"
+            required
+          >
+<%=user.about%></textarea
+          >
+        </div>
+
+        <button class="btn btn-primary" type="submit">Submit form</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer.ejs') %>
