@@ -150,18 +150,39 @@
         </div>
         <div class="row">
             <div class="col-md-6 text-center">Followers : </div>
-            <div class="col-md-6 text-center"><%=user.followers%></div>
+            <div class="col-md-6 text-center"><%=user.followers.length%></div>
         </div>
         <div class="row">
             <div class="col-md-6 text-center">Following : </div>
-            <div class="col-md-6 text-center"><%=user.following%></div>
+            <div class="col-md-6 text-center"><%=user.following.length%></div>
         </div>
     
     </div>
     <!-- Editing Form -->
+    <%if(currentUser && currentUser._id==user.id){%>
     <div class="container">
-        <a href="/user/<%=user._id%>/edit" class="btn btn-success">Edit Details</a>
+        <a href="/user/<%=user._id%>/edit" class="btn btn-warning">Edit Details</a>
     </div>
+    <%}%>
+    <%if(currentUser && currentUser._id!=user.id){   
+            if(   !currentUser.following.includes(user._id)){%>
+        <div class="container">
+            <form action="/user/follows/<%=user._id%>" method="post">
+                <button type ="submit" class="btn btn-success">Follow user </button>
+            </form>
+        </div>
+        <%}else{%>
+        <div class="container">
+            <form action="/user/unfollows/<%=user._id%>" method="post">
+                <button type ="submit" class="btn btn-danger">Unfollow user </button>
+            </form>
+        </div>
+
+        <%}
+    }
+    %>
+        
+
     <!-- VIEWING ALL POSTS BY THIS USER -->
     <div class="container">
         <% for(let i=0; i<allBlogs.length;i++) {%>

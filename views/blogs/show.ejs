@@ -21,7 +21,11 @@
                 <div class="card-body"   >
                   <h5 class="card-title text-center" style="font-size: 1.5rem;"><%=blog.heading%></h5>
                   <p class="card-text" style="font-family: 'Roboto Slab', serif;"><%=blog.body_text%> </p>
-                  <p class="card-text" style="font-size: 1.5rem;"><small class="text-muted">Authored By :<%=blog.author.name%></small></p>
+                  <p class="card-text" style="font-size: 1.5rem;"><small class="text-muted">Authored By :
+                    
+                    <a href="/user/<%=blog.author._id%>"><%=blog.author.name%></a>
+                    
+                    </small></p>
                   <!-- Parsing the date and time here  -->
                   <%
                         let dateCreated="";
@@ -55,7 +59,9 @@
                     <%for(let i=0 ; i<allReviews.length;i++){%>
                         <div class="card my-3">
                             <div class="card-header">Posted By :
-                                <strong><%=allReviews[i].user.name%></strong>
+                                <strong>
+                                    <a href="/user/<%=allReviews[i].user.id%>"><%=allReviews[i].user.name%></a>
+                                </strong>
                             </div>
                             <div class="card-body">
                                 <p class="starability-result" data-rating="<%=allReviews[i].rating%>">

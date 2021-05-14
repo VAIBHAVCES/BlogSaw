@@ -75,8 +75,57 @@ router.patch("/user/:userId",isLoggedIn, async(req,res)=>{
         req.flash('error', 'Profile couldn"t be updated '+err.message );
         res.redirect(`/user/${req.params.userId}`);
     }
-
-
 }); 
+
+router.get("/users",async(req,res)=>{
+    const blogs = await Blogs.find({});
+    const fmap ={};
+    blogs.forEach((item)=>{
+        if(fmap[item.author] ){
+            fmap[item.author]++;
+        }else{
+            fmap[item.author]=1;
+        }
+    });
+    
+    const users = await User.find({});
+    
+    res.render("blogs/contributors.ejs",{users,fmap});
+});
+
+router.post("/user/follows/:person",async(req,res)=>{
+    // /user/<%=currentUser._id%>/follows/<%=user._id%>
+    const userId = req.user._id;
+    const followerPerson = await User.findById(userId);
+    const followingPerson = await User.findById(req.params.person);
+    followerPerson.following.push(followingPerson._id);
+    followingPerson.followers.push(followerPerson._id);
+    await followerPerson.save();
+    await followingPerson.save();
+    res.redirect(`/user/${req.params.person}`);
+});
+
+
+router.post("/user/unfollows/:person",async(req,res)=>{
+
+    try{
+        // /user/<%=currentUser._id%>/unfollows/<%=user._id%>
+        console.log("about to unfollow");
+
+        const userId = req.user._id;
+        console.log("current user is :" +userId);
+        const followerPerson = await User.findById(userId);
+        const followingPerson = await User.findById(req.params.person);
+        followerPerson.following = followerPerson.following.filter(item=>!item.equals(followingPerson._id));
+        const temp =followingPerson.followers.filter(item=> !item.equals(followerPerson._id));
+        followingPerson.followers=temp;
+        await followerPerson.save();
+        await followingPerson.save();
+        res.redirect(`/user/${req.params.person}`);
+    }catch(err){
+        req.flash('error','');
+    }
+});
+
 
 module.exports = router;

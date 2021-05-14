@@ -1,0 +1,47 @@
+
+    
+<%- include('../partials/header.ejs') %>   
+<%- include('../partials/navbar.ejs') %>  
+
+
+    
+<div class="container d-flex justify-content-center align-items-center " style = "flex-direction: column;  " >
+    
+    
+  <h1>Our family members :</h1>
+  <%-include("../partials/flash.ejs");%>
+  <% for(let i=0; i<users.length;i++) {%>
+
+
+    <div class="card m-3" style="max-width: 700px; width: 100%;">
+        <div class="row ">
+            <!-- <div class="col-md-4" style = "border :2px solid red;"></div> -->
+          <div class="col-md-4">
+            <img src="<%=users[i].avatar%>" class="img-responsive" alt="icon not found">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h4 class="card-title"><a href="/user/<%=users[i]._id%>"><%=users[i].name%></a></h5>
+              <h5 class="card-title"> Email id  :<%=users[i].email%></h5>
+              <p class="card-text"> <%=users[i].about.substring(0,50) %> </p>
+              
+              <p class="card-text"><small class="text-muted">No of post : <strong> <%=fmap[users[i]._id]==undefined?0:fmap[users[i]._id]%></strong> </small></p>
+              <p class="card-text"><small class="text-muted">No of Followers : <strong> <%=users[i].followers.length%></strong> </small></p>
+              
+            
+            </div>
+          </div>
+        </div>
+    </div>
+
+<%}%>
+
+
+</div>
+
+
+
+
+
+<%- include('../partials/footer.ejs') %>   
+
