@@ -2,7 +2,8 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 const User = require('../models/users.js');
-
+const sendMail = require('../config/nodemailer.js');
+console.log("recieved status :");
 
 // router.get('/tempUser', async(req,res)=>{
 
@@ -36,9 +37,10 @@ router.post('/login',passport.authenticate('local', {
 router.post('/register', async(req,res)=>{
 
     try{
-
         const newUser = new User({email:req.body.email , username:req.body.username , name:req.body.name});
+        await sendMail(req.body.email);
         const regUser = await User.register(newUser,req.body.password );
+        
         req.flash('success',`${req.body.name} has been registered successfully`);
         res.redirect('/login');
     }catch(err){
