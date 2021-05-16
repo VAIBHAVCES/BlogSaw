@@ -1,0 +1,77 @@
+<%-include("../partials/header.ejs");%>
+<%-include("../partials/navbar.ejs");%>
+<style>
+    .card-img-overlay{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .card-img{
+        opacity: 0.3;
+    }
+    #subscribe{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+<div class="container">
+
+    <h1 class ="text-center">Why to use prime ? </h1>
+
+    <div class="row m-5">
+        <div class="col-md-6 container-fluid">
+
+            <div class="card bg-dark text-white">
+                <img src="https://makeawebsitehub.com/wp-content/uploads/2017/06/what-is-a-blog.jpg" class="card-img" alt="...">
+                <div class="card-img-overlay">
+                  <h3 class="card-title">Experience a advertisment free experience</h3>
+                  <p class="card-text">No disturbance at all</p>
+                </div>
+              </div>
+
+        </div>
+    </div>
+
+    <div class="row m-5">
+        <div class="col-md-6 container-fluid">
+
+            <div class="card bg-dark text-white">
+                <img src="http://www.writersincharge.com/wp-content/uploads/2015/01/dollars.jpg" class="card-img" alt="...">
+                <div class="card-img-overlay">
+                  <h3 class="card-title">Access to all premium articles  written by experts on the first note</h3>
+                  <p class="card-text">Get first notification of premium articles written by experts in the field </p>
+                </div>
+            </div>
+
+        </div>
+        
+    </div>
+    
+    <div class="row m-5">
+        <div class="col-md-6 container-fluid">
+
+            <div class="card bg-dark text-white">
+                <img src="https://www.littlehotelier.com/app/uploads/2021/03/triptease-price-check-booking-com-small-hotels.jpg" class="card-img" alt="...">
+                <div class="card-img-overlay">
+                  <h3 class="card-title">Cheapest bloging website ever </h3>
+                  <h5>Get your prime only in &#8377;250</h5>
+                  <p class="card-text"> </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 container-fluid">
+
+            <form action="/paynow" method="POST" id="subscribe" class="m-2 " target="_blank">
+                <button class="btn btn-success btn-lg">Subscribe Now</button>
+            </form>
+
+        </div>
+
+</div>
+
+<%-include("../partials/footer.ejs");%>

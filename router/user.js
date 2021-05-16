@@ -3,7 +3,7 @@ const User = require('../models/users.js');
 const {Blogs} = require('../models/blogs.js');
 const upload = require('../config/multer.js');
 const cloudinary = require('../config/cloudinary.js');
-const isLoggedIn = require('../middleware.js');
+const {isLoggedIn} = require('../middleware.js');
 
 const path = require('path');
 
