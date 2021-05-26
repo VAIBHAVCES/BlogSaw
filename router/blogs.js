@@ -16,6 +16,8 @@ router.get("/blogs", async (req, res) => {
   }
 });
 
+
+
 router.get("/blogs/new", isLoggedIn, async (req, res) => {
   try {
     res.render("blogs/new");

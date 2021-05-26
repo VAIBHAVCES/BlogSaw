@@ -4,7 +4,7 @@ const router = express.Router();
 const User = require('../models/users.js');
 const sendMail = require('../config/nodemailer.js');
 console.log("recieved status :");
-
+const  isLoggedIn = require('../middleware.js');
 // router.get('/tempUser', async(req,res)=>{
 
 //     const newUser = new User({email:"vaibhavces@gmail.com", name:"Vaibhav Jain",username:"vaibhav123"});
@@ -13,6 +13,37 @@ console.log("recieved status :");
 //     res.send(regUser);
 
 // });
+
+router.get("/failed",(req,res)=>{
+    res.send("redirection failed");
+})
+
+router.get('/good', (req, res) =>{
+    res.send(req.user);
+});
+// res.send(`Welcome mr ${req.user.displayName}!
+
+//     ${req.user}
+// `)
+
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/failed' , successRedirect:"/blogs"}),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/good');
+  }
+);
+
+router.get('/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login','profile', 'email'] }) ,
+(request, accessToken, refreshToken, profile, done)=>{
+  console.log(profile);
+});
+
+
+router.get("failed", (req,res)=>{
+  res.send("failed");
+})
+
+
 router.get('/logout',(req,res)=>{
     req.logout();
     req.flash('success','Logged Out Successfully');
