@@ -10,6 +10,8 @@ router.get("/blogs", async (req, res) => {
     const dbBlogs = await Blogs.find().populate('author');
     // console.log(dbBlogs);
     res.render("blogs/blogs", { dbBlogs });
+    // res.send(req.user);
+
   } catch (err) {
     req.flash("error", 'Couldn"t get all blogs page');
     res.render("partials/error");

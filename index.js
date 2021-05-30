@@ -23,6 +23,8 @@ const userRouter = require("./router/user.js");
 const dotenv = require("dotenv");
 dotenv.config();
 const paymentRouter = require("./router/payment.js");
+const upload = require('./config/multer.js');
+const cloudinary = require('./config/cloudinary.js');
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 mongoose
   .connect("mongodb://localhost/blogsaw", {
@@ -60,16 +62,53 @@ passport.use(
       clientSecret: process.env.CLIENT_SECRET_OAUTH,
       callbackURL: "http://localhost:3000/google/callback",
     },
-    function (accessToken, refreshToken, profile, done) {
+    async function (accessToken, refreshToken, profile, done) {
       /*
      use the profile info (mainly profile id) to check if the user is registerd in ur db
      If yes select the user and pass him to the done callback
      If not create the user and then select <hi></hi>m and pass to callback
     */
-      // console.log(profile);
+      // here i am using email id to check either user exist in db or not
+      let resultTosend ={};
+      try{  
+        const userExist = await User.exists({email:profile["_json"]["email"]});
+        console.log("upploading path : "+profile._json.path);
+        console.log("trying to print id :"+profile.id);
+        const imageUploadRes = await cloudinary.uploader.upload(profile["_json"]['picture']);
+        const profileImgObj = {
+            avatar:imageUploadRes.secure_url,
+            cloudinary_id:imageUploadRes.public_id
+        };
+        if(userExist){
+          // user already exosts in db so just login
+            await User.findOneAndUpdate({google_id:profile.id},profileImgObj);
+            console.log("google uesr was already registered on website");
+        }else{
+            // register user in db 
+           const newUserObj = {
+             name:profile._json.name,
+             email:profile["_json"]["email"],
+             username:profile["_json"]["email"],
+             ...profileImgObj
+           }
+           await User.insertMany(newUserObj);
+           console.log("google user registered succesfully");
+  
+        }
+        
+          console.log("parsing refult to sen d");
+         resultTosend = await User.find({email:profile["_json"]["email"]});
+         profile=resultTosend[0];
+        //  console.log(resultTosend[0]);
+      }catch(err){
+        console.log("some error occured :");
+        console.log(err);
+      }
+      
       return done(null, profile);
     }
   ),(req,res)=>{
+    console.log("inside index.js trying to print now agin");
     console.log(profile);
     console.log(req.user);
   }

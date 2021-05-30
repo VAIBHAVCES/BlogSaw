@@ -5,6 +5,7 @@ const isLoggedIn = (req,res,next)=>{
         res.redirect('/login');
     }else{
         next();
+
     }
 }
 

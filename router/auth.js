@@ -14,11 +14,50 @@ const  isLoggedIn = require('../middleware.js');
 
 // });
 
+async function createUserInDatabase(){
+
+}
+async function verifyUserExistInDatabaseOrNot(user){
+    try{
+        const resp = await User.find({"email" : user.username});    
+        return true;
+    }catch(err){
+        await createUserInDatabase();
+        return false;
+    }
+}
+
+async function  registeruser(userInfo){
+
+}
+
 router.get("/failed",(req,res)=>{
     res.send("redirection failed");
 })
 
-router.get('/good', (req, res) =>{
+router.get('/good', async (req, res) =>{
+    console.log("good router");
+    // UPTO THIS STEP YOU ARE GOOGLE AUTHETICATED 
+    // NOW I WANT TO CHECK THAT EITHER YOU ARE A FIRST TIME USER OR 
+    //  YOU ALREADY HAVE A ACCOUNT IF 
+
+    // try{
+        
+    //     const userExist= await verifyUserExistInDatabaseOrNot(req.user);
+    //     if(userExist){
+    //         //login 
+    //     }else{
+    //         // registeration
+    //     }
+
+    //     console.log(typeof req.user.emails[0].value);
+    //     req.user.username = req.user.emails[0].value;
+    //     res.send(req.user);
+    // }catch(err){
+
+    // }
+    // res.redirect("/blogs");
+
     res.send(req.user);
 });
 // res.send(`Welcome mr ${req.user.displayName}!
@@ -26,17 +65,26 @@ router.get('/good', (req, res) =>{
 //     ${req.user}
 // `)
 
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/failed' , successRedirect:"/blogs"}),
-  function(req, res) {
+router.get('/google/callback',function(req, res,next) {
     // Successful authentication, redirect home.
-    res.redirect('/good');
-  }
+    console.log("inside router /google/callback");
+    console.log(req.user);
+    // res.redirect('/good');
+    next();
+  }, passport.authenticate('google', { failureRedirect: '/failed' , successRedirect:"/blogs"}),
+  
 );
 
-router.get('/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login','profile', 'email'] }) ,
-(request, accessToken, refreshToken, profile, done)=>{
-  console.log(profile);
-});
+router.get('/google',(req,res,next)=>{
+    console.log("inside router /google");
+    next()
+}, passport.authenticate('google',{ scope: ['https://www.googleapis.com/auth/plus.login','profile', 'email'] })
+)
+
+
+// (request, accessToken, refreshToken, profile, done)=>{
+//   console.log("inside router /google");
+// });
 
 
 router.get("failed", (req,res)=>{
@@ -59,12 +107,20 @@ router.get('/login',(req,res)=>{
 
 router.post('/login',passport.authenticate('local', {
     failureRedirect:'/login',
-    failureFlash:true
-}),(req,res)=>{
+    successRedirect:"/blogs",
+    failureFlash:true,
+    scope: ['https://www.googleapis.com/auth/plus.login','profile', 'email'] 
+
+}),  
+
+
+(req,res)=>{
 
         req.flash("success","User logged in successfully");
         res.redirect("/blogs"); 
 });
+
+
 router.post('/register', async(req,res)=>{
 
     try{

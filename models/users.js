@@ -41,6 +41,10 @@ const UserSchema = new mongoose.Schema({
     cloudinary_id:{
         type:String,
         default:process.env.DEFAULT_IMG_ID
+    },
+    google_id:{
+        type:String,
+        default:undefined
     }
 })
 
