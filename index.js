@@ -24,7 +24,10 @@ const dotenv = require("dotenv");
 dotenv.config();
 const paymentRouter = require("./router/payment.js");
 const upload = require('./config/multer.js');
-const cloudinary = require('./config/cloudinary.js');
+
+const sendRegisterationWelcomeMail= require('./config/nodemailer.js');
+
+const {cloudinary,delteImageFromCloudinary,uploadImageFromURL} = require('./config/cloudinary.js');
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 mongoose
   .connect("mongodb://localhost/blogsaw", {
@@ -52,10 +55,11 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 app.use(express.static(path.join(__dirname, "public")));
 // seed();
-//********************************************************************************************************* */
-// Define Passport Strategy At top before using it
+
+app.use(passport.initialize());
+app.use(passport.session());
 passport.use(
-  "google", //Strategy name was missing - Devansh //************************************************************************* */
+  "google", 
   new GoogleStrategy(
     {
       clientID: process.env.CLIENT_ID_OAUTH,
@@ -69,85 +73,83 @@ passport.use(
      If not create the user and then select <hi></hi>m and pass to callback
     */
       // here i am using email id to check either user exist in db or not
+      // console.log("flow of control test - index.js / google strategy");
+
       let resultTosend ={};
       try{  
         const userExist = await User.exists({email:profile["_json"]["email"]});
-        console.log("upploading path : "+profile._json.path);
-        console.log("trying to print id :"+profile.id);
-        const imageUploadRes = await cloudinary.uploader.upload(profile["_json"]['picture']);
+        // console.log("upploading path : "+profile["_json"]["path"]);
+        // console.log("trying to print id :"+profile.id);
+        const imageUploadRes = await uploadImageFromURL(profile["_json"]['picture']);
+        // console.log("image uploaded status object");
+        // console.log(imageUploadRes);
         const profileImgObj = {
             avatar:imageUploadRes.secure_url,
             cloudinary_id:imageUploadRes.public_id
         };
         if(userExist){
           // user already exosts in db so just login
-            await User.findOneAndUpdate({google_id:profile.id},profileImgObj);
-            console.log("google uesr was already registered on website");
+          // also we need to update its profile picture on every login
+          // because it may be possible that your user has changed google dp
+            const getUserFromDB = await User.find({email:profile["_json"]["email"]});
+            await delteImageFromCloudinary(getUserFromDB[0].cloudinary_id);
+            await User.findOneAndUpdate({email:profile["_json"]["email"]},profileImgObj);
+            // console.log("google uesr was already registered on website");
         }else{
             // register user in db 
-           const newUserObj = {
-             name:profile._json.name,
-             email:profile["_json"]["email"],
-             username:profile["_json"]["email"],
-             ...profileImgObj
-           }
-           await User.insertMany(newUserObj);
-           console.log("google user registered succesfully");
+            const newUserObj = {
+              name:profile._json.name,
+              email:profile["_json"]["email"],
+              username:profile["_json"]["email"],
+              ...profileImgObj
+            }
+            await User.insertMany(newUserObj);
+            await sendRegisterationWelcomeMail(profile["_json"]["email"]);
+            // console.log("google user registered succesfully");
   
         }
         
-          console.log("parsing refult to sen d");
-         resultTosend = await User.find({email:profile["_json"]["email"]});
-         profile=resultTosend[0];
-        //  console.log(resultTosend[0]);
-      }catch(err){
-        console.log("some error occured :");
-        console.log(err);
-      }
+        // console.log("parsing refult to sen d");
+        resultTosend = await User.find({email:profile["_json"]["email"]});
+        profile=resultTosend[0];
+        
+        }catch(err){
+          console.log(err);
+        }
       
       return done(null, profile);
     }
-  ),(req,res)=>{
-    console.log("inside index.js trying to print now agin");
-    console.log(profile);
-    console.log(req.user);
-  }
-
+  
+  )
 );
-app.use(passport.initialize());
-app.use(passport.session());
 passport.use(new PassportLocal(User.authenticate()));
 // passport.serializeUser(User.serializeUser());
 // passport.deserializeUser(User.deserializeUser());​
 passport.serializeUser(function (user, done) {
-  /*
-    From the user take just the id (to minimize the cookie size) and just pass the id of the user
-    to the done callback
+  // console.log("flow of control inside serialization ");
+  done(null, user);
+});
 
-    PS: You dont have to do it like this its just usually done like this
-    */
-  done(null, user);
-});
-passport.deserializeUser(function (user, done) {
-  /*npm
-    Instead of user this function usually recives the id 
-    then you use the id to select the user from the db and pass the user obj to the done callback
-    PS: You can later access this data in any routes in: req.user
-    */
-  done(null, user);
-});
-// app.get(
-//   "/google/callback",
-//   passport.authenticate("google", {
-//     failureRedirect: "/failed",
-//     successRedirect: "https://www.google.co.in",
-//     scope: ["profile"],// Scope was missing  /************************************************************************************* */
-//   }),
-//   function (req, res) {
-//     // Successful authentication, redirect home.
-//     res.redirect("/good");
-//   }
-// );
+passport.deserializeUser(async function (user, done) {
+  try{
+    
+    // console.log("flow of control inside deserialization");
+    // console.log("trying to printer user in deserialization before update");
+    // console.log(user);
+    const{_id}= user;
+    user = await User.findById(_id);
+    
+    // console.log("trying to printer user in deserialization after update");
+    // console.log(user);
+    done(null, user);
+  
+  }catch(err){
+    done(err);
+  }
+
+}); 
+
+// });
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");

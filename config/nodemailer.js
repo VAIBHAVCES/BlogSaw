@@ -3,7 +3,7 @@ const path  = require("path");
 const  fs = require('fs').promises;
 
 // async..await is not allowed in global scope, must use a wrapper
-async function sendmail(emailId){
+async function sendRegisterationWelcomeMail(emailId){
 
     // Generate test SMTP service account from ethereal.email
     const file = await fs.readFile("../Blogsaw/public/html mail/welcome.html",{"encoding":"utf-8"}).then((data)=>{
@@ -33,7 +33,7 @@ async function sendmail(emailId){
     });
 }
 
-module.exports = sendmail;
+module.exports = sendRegisterationWelcomeMail;
 // myFunc().then((params)=>{
 //     // console.log("transporter is :");
 //     // console.log(transporter);

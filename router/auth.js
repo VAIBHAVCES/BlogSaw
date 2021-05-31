@@ -82,11 +82,6 @@ router.get('/google',(req,res,next)=>{
 )
 
 
-// (request, accessToken, refreshToken, profile, done)=>{
-//   console.log("inside router /google");
-// });
-
-
 router.get("failed", (req,res)=>{
   res.send("failed");
 })
@@ -102,7 +97,8 @@ router.get('/register',(req,res)=>{
 });
 
 router.get('/login',(req,res)=>{
-    res.render('auth/login.ejs');
+    if(req.isAuthenticated())   res.redirect("/blogs");
+    else    res.render('auth/login.ejs');
 });
 
 router.post('/login',passport.authenticate('local', {
