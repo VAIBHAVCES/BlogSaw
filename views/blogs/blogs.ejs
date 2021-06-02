@@ -3,16 +3,61 @@
 <%- include('../partials/header.ejs') %>   
 <%- include('../partials/navbar.ejs') %>  
 
-<%
+<style>
+
+
+    .bgImg{ 
+        position: relative;
+        height: 70vh;
+        background-color: black;
+        z-index: -2;
+    }
+    .textWrapper::before{
+        content: "";
+        background-image: url("/images/blog2.jpg");
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        right: 0px;
+        left: 0px;
+        z-index: -1;
+        background-position: center;
+        opacity: 0.7;
+    }
+    .textWrapper{
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 1rem;
+      
+    }
+    .allBlogs h1 {
+        /* padding: 40px; */
+    }
+
+    .card{
+      box-shadow: 10px 10px 19px 3px rgba(0,0,0,0.16);
+-webkit-box-shadow: 10px 10px 19px 3px rgba(0,0,0,0.16);
+-moz-box-shadow: 10px 10px 19px 3px rgba(0,0,0,0.16);
+    }
+    
+</style>
+
+<div class="flexbox bgImg">
+  <div class="textWrapper">
+    <h1 style="color:white; font-weight: 600;">Because here we believe in your thoughts and ideas</h1>
+    <span style="color:white; font-weight: 600;">A dynamic online blogging website </span>
+  </div>  
+
+</div>
+
+
+<% 
     const allMonths = ['Jan','Feb','March','April','May','June','July','Aug','Sep','Oct','Nov','Dec'];
     const allDays =['Sun', 'Mon' ,'Tue', 'Wed', 'Thu' ,' Fri' ,'Sat']
-    
 %>
+<div class="container d-flex justify-content-center align-items-center allBlogs" style = "flex-direction: column;  " >
     
-<div class="container d-flex justify-content-center align-items-center " style = "flex-direction: column;  " >
     
-    
-  <h1>Popular Blogs...</h1>
+  <h1>Exploration</h1>
   <%-include("../partials/flash.ejs");%>
   <% for(let i=0; i<dbBlogs.length;i++) {%>
 
@@ -36,7 +81,7 @@
               <p class="card-text"> <%=dbBlogs[i].body_text.substring(0,50) %> </p>
               <p class="card-text"><small class="text-muted">Created by: <strong>
                 
-                <a href="/user/<%=dbBlogs[i].author.id%>"><%=dbBlogs[i].author.name%></a>
+                <a href="/user/<%=dbBlogs[i].author.id%>" style="text-decoration:none" ><%=dbBlogs[i].author.name%></a>
               </strong> </small></p>
               <p class="card-text"><small class="text-muted">on <%=dateCreated%> </small></p>
               <a href="/blogs/<%=dbBlogs[i]._id%>" class = "btn btn-primary">Read More</a>

@@ -1,10 +1,23 @@
 <%-include('../partials/header.ejs')%>
 <%-include('../partials/navbar.ejs')%>
 <link rel="stylesheet" href="/css/google_check_in.css">
-<div class="container mx5">
+<%-include('../partials/flash.ejs')%>
 
-    <%-include('../partials/flash.ejs')%>
-    <h1>Login </h1>
+<style>
+  .loginBox{
+    
+  }
+
+  .loginContent{
+    width: 500px;
+  }
+
+</style>
+
+<div class="loginBox flexbox">
+
+    <div class="loginContent">
+      <h1>Login </h1>
     <form class="needs-validation" action="/login" method = "POST" novalidate >
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
@@ -12,11 +25,13 @@
           </div>         
         <div class="mb-3">
           <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control" name="password" id="password" required>
+          <input type="password" class="form-control" name="password" id="password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" required>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
+      <span> <strong> OR </strong></span>
 
+      <!-- goole login -->
       <form action="/google" method="get">
       
         <button type="submit" class="google-button">
@@ -28,8 +43,18 @@
         
       </form>
 
+    </div>
+    
+
+     
+
 </div>
 
 
 
 <%-include('../partials/footer.ejs')%>
+<style>
+  footer{
+    position: absolute;
+  }
+</style>

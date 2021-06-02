@@ -5,17 +5,30 @@
 }
 
 body{
-    background-color: aqua;
+    /* background-color: aqua; */
+    background-color: #e0fbfc;
 }
+
 .card img{
     object-fit: contain;
     height: 100%;
     width: 100%;
 }
-.navbtns a{
-
-}
 
 .dropdown-menu{
     z-index: +1;
 } 
+
+.flexbox{
+    display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      flex-direction: column;
+  }
+
+  .card{
+    box-shadow: 10px 10px 19px 3px rgba(0,0,0,0.16);
+-webkit-box-shadow: 10px 10px 19px 3px rgba(0,0,0,0.16);
+-moz-box-shadow: 10px 10px 19px 3px rgba(0,0,0,0.16);
+  }
