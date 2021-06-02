@@ -5,7 +5,7 @@ const router = express.Router();
 const { Blogs } = require("../models/blogs.js");
 const { Reviews } = require("../models/review.js");
 
-router.get("/blogs", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const dbBlogs = await Blogs.find().populate('author');
     // console.log(dbBlogs);
@@ -35,7 +35,7 @@ router.post("/blogs/new", async (req, res) => {
     const newBlogBody  = { ...req.body , author:req.user.id};
     await Blogs.insertMany(newBlogBody);
     req.flash("success", "New blog added page ");
-    res.redirect("/blogs");
+    res.redirect("/");
   } catch (err) {
     req.flash("error", "New blog cant be added");
     res.render("partials/error");
@@ -57,7 +57,7 @@ router.patch("/blogs/:id/user/:userId", async (req, res) => {
     console.log("inside patchh route");
     await Blogs.findByIdAndUpdate(req.params.id, {...req.body , author:req.params.userId });
     req.flash("success", "blogs updated successfully");
-    res.redirect("/blogs");
+    res.redirect("/");
   } catch (err) {
     req.flash("error", 'blog couldn"t be updated ');
     res.render("partials/error");
@@ -67,7 +67,7 @@ router.delete("/blogs/:id/user/userId", isLoggedIn ,async (req, res) => {
   try {
     await Blogs.findByIdAndDelete(req.params.id);
     req.flash("success", "blog dropped successfully");
-    res.redirect("/blogs");
+    res.redirect("/");
   } catch (err) {
     req.flash("error", 'blog couldn"be deleted ');
     res.render("partials/error");
