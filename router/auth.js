@@ -56,7 +56,7 @@ router.get('/good', async (req, res) =>{
     // }catch(err){
 
     // }
-    // res.redirect("/blogs");
+    // res.redirect("/");
 
     res.send(req.user);
 });
@@ -97,7 +97,7 @@ router.get('/register',(req,res)=>{
 });
 
 router.get('/login',(req,res)=>{
-    if(req.isAuthenticated())   res.redirect("/blogs");
+    if(req.isAuthenticated())   res.redirect("/");
     else    res.render('auth/login.ejs');
 });
 
@@ -113,7 +113,7 @@ router.post('/login',passport.authenticate('local', {
 (req,res)=>{
 
         req.flash("success","User logged in successfully");
-        res.redirect("/blogs"); 
+        res.redirect("/"); 
 });
 
 
