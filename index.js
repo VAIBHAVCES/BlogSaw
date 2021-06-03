@@ -1,6 +1,9 @@
 // This is the google branch
 
-
+if(process.env.NODE_ENV!='production'){
+  const dotenv = require("dotenv");
+  dotenv.config();
+}
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -20,8 +23,7 @@ const passport = require("passport");
 const User = require("./models/users.js");
 const isLoggedIn = require("./middleware.js");
 const userRouter = require("./router/user.js");
-const dotenv = require("dotenv");
-dotenv.config();
+
 const paymentRouter = require("./router/payment.js");
 const upload = require('./config/multer.js');
 
@@ -30,7 +32,7 @@ const sendRegisterationWelcomeMail= require('./config/nodemailer.js');
 const {cloudinary,delteImageFromCloudinary,uploadImageFromURL} = require('./config/cloudinary.js');
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 mongoose
-  .connect("mongodb://localhost/blogsaw", {
+  .connect(process.env.MONGO_LINK , {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
@@ -163,6 +165,6 @@ app.use(paymentRouter);
 app.get("/testViews", (req, res) => {
   res.render("testViews");
 });
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000 , () => {
   console.log("Listening or port : " + 3000);
 });
