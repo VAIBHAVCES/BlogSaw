@@ -84,7 +84,7 @@ router.get('/google',(req,res,next)=>{
 
 router.get("failed", (req,res)=>{
   res.send("failed");
-})
+})  
 
 
 router.get('/logout',(req,res)=>{
