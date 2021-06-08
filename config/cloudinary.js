@@ -17,8 +17,10 @@ async function uploadImageFromURL(url){
 
 async function delteImageFromCloudinary(cloud_id){
     try{
-        await cloudinary.uploader.destroy(cloud_id);
-        
+        if(cloud_id!=process.env.DEFAULT_IMG_ID)
+            await cloudinary.uploader.destroy(cloud_id);
+        else
+            console.log("Cant delte default image");
     }catch(err){
         return err;
     }
