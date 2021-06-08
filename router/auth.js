@@ -71,7 +71,7 @@ router.get('/google/callback',function(req, res,next) {
     console.log(req.user);
     // res.redirect('/good');
     next();
-  }, passport.authenticate('google', { failureRedirect: '/failed' , successRedirect:"/blogs"}),
+  }, passport.authenticate('google', { failureRedirect: '/failed' , successRedirect:"/"}),
   
 );
 
