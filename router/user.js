@@ -2,7 +2,7 @@ const router = require('express').Router();
 const User = require('../models/users.js');
 const {Blogs} = require('../models/blogs.js');
 const upload = require('../config/multer.js');
-const cloudinary = require('../config/cloudinary.js');
+const {cloudinary, delteImageFromCloudinary} = require('../config/cloudinary.js');
 const {isLoggedIn} = require('../middleware.js');
 
 const path = require('path');
@@ -21,9 +21,9 @@ router.get("/user/:userId", async(req,res)=>{
     }
 });
 
-router.patch("/user/:userId/dp",upload.single('update'),async(req,res)=>{
+router.patch("/user/:userId/dp",isLoggedIn, upload.single('update'),async(req,res)=>{
     
-    try{
+    // try{
 
         const result = await cloudinary.uploader.upload(req.file.path);
     
@@ -44,11 +44,29 @@ router.patch("/user/:userId/dp",upload.single('update'),async(req,res)=>{
         res.redirect(`/user/${req.params.userId}`);
 
 
-    }catch(err){
-        req.flash('error','Image couldn"t uploaded' );
-        res.redirect(`/user/${req.params.userId}`);
-    }
+    // }catch(err){
+    //     req.flash('error','Image couldn"t uploaded' );
+    //     res.redirect(`/user/${req.params.userId}`);
+    // }
 
+});
+router.delete("/user/:userId/dp",isLoggedIn ,async(req,res)=>{
+    console.log("delete router toh hit hua hai ");
+    // try{
+        const updateThis = {
+            avatar:process.env.DEFAULT_IMG,
+            cloudinary_id:process.env.DEFAULT_IMG_ID
+        }
+        const userImageToUpdated = await User.findById(req.params.userId);
+        await User.findByIdAndUpdate(req.params.userId,updateThis);
+        console.log("deleteing : "+userImageToUpdated.cloudinary_id);
+        await delteImageFromCloudinary(userImageToUpdated.cloudinary_id)
+        req.flash("success","Image has been removed suuccessfully");
+        res.redirect(`/user/${req.params.userId}`);
+
+    // }catch(err){
+    //     req.flash("error","Image could't be uploaded because "+err );
+    // }   
 });
 
 router.get("/user/:userId/edit",isLoggedIn,async(req,res)=>{
