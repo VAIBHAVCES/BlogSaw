@@ -55,6 +55,7 @@ app.use(express.urlencoded({ extended: true })); // for parsing application/x-ww
 // const parseJson = express.json({ extended: false });
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
+console.log("seriving: "+__dirname);
 app.use(express.static(path.join(__dirname, "public")));
 // seed();
 

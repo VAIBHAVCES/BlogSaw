@@ -5,8 +5,11 @@ const  fs = require('fs').promises;
 // async..await is not allowed in global scope, must use a wrapper
 async function sendRegisterationWelcomeMail(emailId){
 
-    // Generate test SMTP service account from ethereal.email
-    const file = await fs.readFile("/html mail/welcome.html",{"encoding":"utf-8"}).then((data)=>{
+    // Generate test SMTP service account from ethereal.
+    console.log("yaha par dekhte hai : "+__dirname);
+    console.log("yaha par dekhte hai : "+process.cwd());
+    
+    const file = await fs.readFile( path.join(process.cwd(),"/public/html_mail/welcome.html"),{"encoding":"utf-8"}).then((data)=>{
         
         console.log("parsing message file ");
         // console.log(data);
