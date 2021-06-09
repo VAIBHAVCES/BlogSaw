@@ -5,15 +5,9 @@ const User = require('../models/users.js');
 const sendMail = require('../config/nodemailer.js');
 console.log("recieved status :");
 const  isLoggedIn = require('../middleware.js');
-// router.get('/tempUser', async(req,res)=>{
 
-//     const newUser = new User({email:"vaibhavces@gmail.com", name:"Vaibhav Jain",username:"vaibhav123"});
-//     const regUser = await User.register(newUser,"1234" );
-//     console.log(req.user);
-//     res.send(regUser);
 
-// });
-
+// --------------UTILITIES FUNCTION TO BE USED---------------
 async function createUserInDatabase(){
 
 }
@@ -26,44 +20,14 @@ async function verifyUserExistInDatabaseOrNot(user){
         return false;
     }
 }
-
-async function  registeruser(userInfo){
-
-}
+//----------------------------------------------------
 
 router.get("/failed",(req,res)=>{
-    res.send("redirection failed");
+    req.flash("error","Some problem while google authentication ")
+    res.redirect("/");
 })
 
-router.get('/good', async (req, res) =>{
-    console.log("good router");
-    // UPTO THIS STEP YOU ARE GOOGLE AUTHETICATED 
-    // NOW I WANT TO CHECK THAT EITHER YOU ARE A FIRST TIME USER OR 
-    //  YOU ALREADY HAVE A ACCOUNT IF 
-
-    // try{
-        
-    //     const userExist= await verifyUserExistInDatabaseOrNot(req.user);
-    //     if(userExist){
-    //         //login 
-    //     }else{
-    //         // registeration
-    //     }
-
-    //     console.log(typeof req.user.emails[0].value);
-    //     req.user.username = req.user.emails[0].value;
-    //     res.send(req.user);
-    // }catch(err){
-
-    // }
-    // res.redirect("/");
-
-    res.send(req.user);
-});
-// res.send(`Welcome mr ${req.user.displayName}!
-
-//     ${req.user}
-// `)
+// ---------------------AUTHENTICATION ROUTERS HANDLE WITH CARE-------------------
 
 router.get('/google/callback',function(req, res,next) {
     // Successful authentication, redirect home.
@@ -80,11 +44,6 @@ router.get('/google',(req,res,next)=>{
     next()
 }, passport.authenticate('google',{ scope: ['https://www.googleapis.com/auth/plus.login','profile', 'email'] })
 )
-
-
-router.get("failed", (req,res)=>{
-  res.send("failed");
-})  
 
 
 router.get('/logout',(req,res)=>{
@@ -108,8 +67,6 @@ router.post('/login',passport.authenticate('local', {
     scope: ['https://www.googleapis.com/auth/plus.login','profile', 'email'] 
 
 }),  
-
-
 (req,res)=>{
 
         req.flash("success","User logged in successfully");

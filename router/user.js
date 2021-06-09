@@ -6,7 +6,7 @@ const {cloudinary, delteImageFromCloudinary} = require('../config/cloudinary.js'
 const {isLoggedIn} = require('../middleware.js');
 
 const path = require('path');
-
+// For viewing a persons profilr without even logging in with no change access
 router.get("/user/:userId", async(req,res)=>{
     try{
         const user = await User.findById(req.params.userId); 
@@ -21,6 +21,7 @@ router.get("/user/:userId", async(req,res)=>{
     }
 });
 
+// Router for updating profile image of any account 
 router.patch("/user/:userId/dp",isLoggedIn, upload.single('update'),async(req,res)=>{
     
     // try{
@@ -50,9 +51,9 @@ router.patch("/user/:userId/dp",isLoggedIn, upload.single('update'),async(req,re
     // }
 
 });
+// Router for deleting profile image of any account 
 router.delete("/user/:userId/dp",isLoggedIn ,async(req,res)=>{
-    console.log("delete router toh hit hua hai ");
-    // try{
+    try{
         const updateThis = {
             avatar:process.env.DEFAULT_IMG,
             cloudinary_id:process.env.DEFAULT_IMG_ID
@@ -64,11 +65,11 @@ router.delete("/user/:userId/dp",isLoggedIn ,async(req,res)=>{
         req.flash("success","Image has been removed suuccessfully");
         res.redirect(`/user/${req.params.userId}`);
 
-    // }catch(err){
-    //     req.flash("error","Image could't be uploaded because "+err );
-    // }   
+    }catch(err){
+        req.flash("error","Image could't be uploaded because "+err );
+    }   
 });
-
+// Router for getting the edit page for a particular user
 router.get("/user/:userId/edit",isLoggedIn,async(req,res)=>{
     try{
 
@@ -80,6 +81,7 @@ router.get("/user/:userId/edit",isLoggedIn,async(req,res)=>{
     }
 }); 
 
+// Router for updating a user's profile this router called on submission of prev form router
 router.patch("/user/:userId",isLoggedIn, async(req,res)=>{
     try{
 
@@ -94,7 +96,7 @@ router.patch("/user/:userId",isLoggedIn, async(req,res)=>{
         res.redirect(`/user/${req.params.userId}`);
     }
 }); 
-
+// Router for displaying all users in Our Top Contributors Page
 router.get("/users",async(req,res)=>{
     const blogs = await Blogs.find({});
     const fmap ={};
@@ -110,28 +112,31 @@ router.get("/users",async(req,res)=>{
     
     res.render("blogs/contributors.ejs",{users,fmap});
 });
-
-router.post("/user/follows/:person",async(req,res)=>{
-    // /user/<%=currentUser._id%>/follows/<%=user._id%>
-    const userId = req.user._id;
-    const followerPerson = await User.findById(userId);
-    const followingPerson = await User.findById(req.params.person);
-    followerPerson.following.push(followingPerson._id);
-    followingPerson.followers.push(followerPerson._id);
-    await followerPerson.save();
-    await followingPerson.save();
-    res.redirect(`/user/${req.params.person}`);
+// if logged in user follows another user 
+router.post("/user/follows/:person", isLoggedIn ,async(req,res)=>{
+    try{
+        const userId = req.user._id;
+        const followerPerson = await User.findById(userId);
+        const followingPerson = await User.findById(req.params.person);
+        followerPerson.following.push(followingPerson._id);
+        followingPerson.followers.push(followerPerson._id);
+        await followerPerson.save();
+        await followingPerson.save();
+        res.redirect(`/user/${req.params.person}`);
+        
+    }catch(err){
+        req.flash("error","Some problem in following user : Contact Admin");
+        res.redirect(`/user/${req.params.person}`);
+        
+    }
 });
+// Unfollowing a user from logged in accountr
 
-
-router.post("/user/unfollows/:person",async(req,res)=>{
+router.post("/user/unfollows/:person",isLoggedIn ,async(req,res)=>{
 
     try{
-        // /user/<%=currentUser._id%>/unfollows/<%=user._id%>
-        console.log("about to unfollow");
-
+        
         const userId = req.user._id;
-        console.log("current user is :" +userId);
         const followerPerson = await User.findById(userId);
         const followingPerson = await User.findById(req.params.person);
         followerPerson.following = followerPerson.following.filter(item=>!item.equals(followingPerson._id));

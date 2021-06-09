@@ -1,35 +1,46 @@
-// This is the google branch
-
+// Managment of enviorment variables
 if(process.env.NODE_ENV!='production'){
   const dotenv = require("dotenv");
   dotenv.config();
 }
-
+// Routing and server library 
 const express = require("express");
+// Mongoose for connecting mongo databse
 const mongoose = require("mongoose");
 const path = require("path");
+// Model 
 const { Blogs } = require("./models/blogs.js");
 const { seed } = require("./seed.js");
-const { blogsRout } = require("./router/blogs.js");
+// Server variable
 const app = express();
+// For creating diffetent types of requests AS PATCH AND DELETE
 const methodOverride = require("method-override");
+// For managing user's  login session 
 const session = require("express-session");
+// for displaying flash messages 
 const flash = require("connect-flash");
-const Passport = require("passport");
+// framework for authentication
+// const Passport = require("passport");
+// Parser for parsing the body from diffeten types of requests
 const bodyParser = require("body-parser");
+// Passport local- strategy  or local databases type authentication
 const PassportLocal = require("passport-local");
+// ROUTERS import from / Router 
 const authRouter = require("./router/auth.js");
+const { blogsRout } = require("./router/blogs.js");
+const userRouter = require("./router/user.js");
 const passport = require("passport");
 const User = require("./models/users.js");
+// MIDDLEWARE 
 const isLoggedIn = require("./middleware.js");
-const userRouter = require("./router/user.js");
-
+// Connecting payment routes
 const paymentRouter = require("./router/payment.js");
+// Multer for uploading profile picture
 const upload = require('./config/multer.js');
-
-const sendRegisterationWelcomeMail= require('./config/nodemailer.js');
-
 const {cloudinary,delteImageFromCloudinary,uploadImageFromURL} = require('./config/cloudinary.js');
+// Using nodemailer framework for sending up a welcome mail
+const sendRegisterationWelcomeMail= require('./config/nodemailer.js');
+// Google startegy for integerating google authenrtication 
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 mongoose
   .connect(process.env.MONGO_LINK , {
@@ -51,14 +62,14 @@ app.use(
 app.use(flash());
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-// const parseUrl = express.urlencoded({ extended: false });
-// const parseJson = express.json({ extended: false });
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
-console.log("seriving: "+__dirname);
-app.use(express.static(path.join(__dirname, "public")));
-// seed();
 
+// console.log("serving: "+__dirname);   // testing purpouse
+app.use(express.static(path.join(__dirname, "public")));
+// seed(); // for seeding any intital data turn this on
+
+// -------------------------------------- AUTHENTICATION ROUTERS AND MIDDLEWARES --------------------------
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(
@@ -70,13 +81,7 @@ passport.use(
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     async function (accessToken, refreshToken, profile, done) {
-      /*
-     use the profile info (mainly profile id) to check if the user is registerd in ur db
-     If yes select the user and pass him to the done callback
-     If not create the user and then select <hi></hi>m and pass to callback
-    */
-      // here i am using email id to check either user exist in db or not
-      // console.log("flow of control test - index.js / google strategy");
+     
 
       let resultTosend ={};
       try{  
@@ -151,8 +156,9 @@ passport.deserializeUser(async function (user, done) {
   }
 
 }); 
+// ----------------------------------------------END OF AUTH Region----------------------------------
 
-// });
+// Connecting different Routers 
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
@@ -163,9 +169,7 @@ app.use(blogsRout);
 app.use(authRouter);
 app.use(userRouter);
 app.use(paymentRouter);
-app.get("/testViews", (req, res) => {
-  res.render("testViews");
-});
+
 app.listen(process.env.PORT || 3000 , () => {
   console.log("Listening or port : " + 3000);
 });
