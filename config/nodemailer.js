@@ -6,7 +6,7 @@ const  fs = require('fs').promises;
 async function sendRegisterationWelcomeMail(emailId){
 
     // Generate test SMTP service account from ethereal.email
-    const file = await fs.readFile("../Blogsaw/public/html mail/welcome.html",{"encoding":"utf-8"}).then((data)=>{
+    const file = await fs.readFile("../public/html mail/welcome.html",{"encoding":"utf-8"}).then((data)=>{
         
         console.log("parsing message file ");
         // console.log(data);
