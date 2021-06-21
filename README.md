@@ -33,10 +33,9 @@ Try the tool: [BlogSaw](https://blogsaw.herokuapp.com/)
 - with the feature of client side authentication which checks strongness of your password
 
 - **Google Authentication** If you want to do process more easy you can login directly from google , where your account will
-- be created using your google account details . If account not exists if will create account else will log you in
+be created using your google account details . If account not exists if will create account else will log you in
 
 - **Sessions for Users** For safe browsing and user specific smooth experience session is maintained in browser
-- 
 - **Creating Blog** You have been given a form where you can create your own blog posts 
 - **User Specific Admin Excess** Power for CUD(Creation Updation Deletion ) is based on your user account means no one can delete or update blog created by someone else
 - **Reviews with Rating** Similar to blogs a revies system has been created where specific user will have power to create a revies with star rating
