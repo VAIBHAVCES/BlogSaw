@@ -42,6 +42,7 @@ be created using your google account details . If account not exists if will cre
 - **Payment Gateway** A prime membership has been maintained with 250Rs charges , but for now no money will be deducted from your account on payment because this is a test buisness account so feel free to pay
 - **User Account Page** Each user has publicly viewed information availaible but CUD(Creation Updation Deletion ) action is again user specific
 - **Backend Image Managment** An optimization algorithm is used to maintain your profile images every time you update your image
+- **Welcome Mail** As soon as you register for first time you recieve a welcome mail from host of the website
 - **AND MANY MORE SO EXPLORE YOURSELF**
 
 ## 🛠️ Installation Steps
