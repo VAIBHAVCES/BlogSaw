@@ -8,7 +8,7 @@
 </h1>
 
 
-<p align="center"><img src="./src/images/github-profile-readme-generator.gif" alt="github-profile-readme-generator gif" /></p>
+<p align="center"><img src="https://github.com/VAIBHAVCES/BlogSaw/blob/main/ReadmeSrc/blog_saw_gif.gif" alt="github-profile-readme-generator gif" /></p>
 
 <p align="center">
     <a href="https://blogsaw.herokuapp.com/" target="blank">View Demo</a>
