@@ -16,7 +16,7 @@
 </p>
 
 #### BlogSaw : A website to present your thoughts and ideas
-This website is made with a purpose to behavious of creating a blogging website. I have tried to as much as features possible
+A bloggin website where you can share your thoughts about anything . Here you have man features like followers followings custom profiles likes comments do give it a try to know all about it on your own.
 
 
 ## 🚀 Demo 
